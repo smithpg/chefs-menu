@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import useResource from "../hooks/useResource";
 import styled from "styled-components";
 
 import { Route, Link, Switch } from "react-router-dom";
 import { TiDelete, TiLocation } from "react-icons/ti";
+import { callAPI } from "../helpers/api";
 
 import { layout, colors } from "../themes/theme";
 import Navbar from "../components/Navbar";
@@ -36,8 +36,9 @@ const PageContainer = styled.div`
   overflow: hidden;
   .paneLeft {
     height: calc(100vh - ${layout.navHeight});
-    flex-basis: 30%;
-    min-width: 375px;
+    max-width: 375px;
+    width: 30%;
+    flex-grow: 0;
     padding: ${layout.spacing(3)} ${layout.spacing(5)};
     // position: sticky;
     // top: ${layout.navHeight};
@@ -46,6 +47,7 @@ const PageContainer = styled.div`
   .paneRight {
     height: calc(100vh - ${layout.navHeight});
     flex-grow: 1;
+    width: 70%;
     overflow-y: scroll;
     padding: 0px ${layout.spacing(5)};
     background-color: ${colors.bgcolor};
@@ -81,8 +83,11 @@ const PageContainer = styled.div`
 `;
 
 function BrowseChefsPage({ classes, ...rest }) {
-  let [retrievedChefs] = useResource("chef");
-
+  let [retrievedChefs, setChefs] = useState({
+    loading: false,
+    items: []
+  });
+  let [location, setLocation] = useState("");
   let [cuisines, setCuisines] = useState(
     cuisinesArray.reduce(
       (accum, cuisineName) => {
@@ -92,6 +97,29 @@ function BrowseChefsPage({ classes, ...rest }) {
       { all: true }
     )
   );
+
+  function onChangeLocation(e) {
+    setLocation(e.target.value);
+  }
+
+  async function onSubmit() {
+    const endpoint = `chef${
+      location ? `?location=${location.replace(/\s/, "+")}` : null
+    }`;
+
+    // Set loading flag
+    setChefs({
+      ...retrievedChefs,
+      loading: true
+    });
+
+    const response = await callAPI({ endpoint });
+
+    setChefs({
+      loading: false,
+      items: response
+    });
+  }
 
   function toggleCuisine(cuisineName) {
     if (cuisineName !== "all" && cuisines.all) {
@@ -139,7 +167,16 @@ function BrowseChefsPage({ classes, ...rest }) {
       <Navbar />
 
       <div className="paneLeft">
-        <TextField label="Location" IconComponent={TiLocation} />
+        <form action="">
+          <TextField
+            label="Location"
+            value={location}
+            IconComponent={TiLocation}
+            onChange={onChangeLocation}
+            onClickIcon={onSubmit}
+          />
+        </form>
+
         <span id="cuisine-label">Cuisine</span>
         {selectedCuisines.length > 0 && (
           <ul className="chip-list selected">{selectedCuisines}</ul>
@@ -152,17 +189,17 @@ function BrowseChefsPage({ classes, ...rest }) {
       <div className="paneRight">
         <h2>Available Chefs</h2>
         <ul className="chef-container">
-          {!retrievedChefs ? (
-            "loading..."
-          ) : (
-            <>
-              {cuisines["all"]
-                ? retrievedChefs.map(chef => <ChefCard {...chef} />)
-                : retrievedChefs
-                    .filter(chef => cuisines[chef.cuisine])
-                    .map(chef => <ChefCard {...chef} />)}
-            </>
-          )}
+          {retrievedChefs.loading
+            ? "loading..."
+            : retrievedChefs.items && (
+                <>
+                  {cuisines["all"]
+                    ? retrievedChefs.items.map(chef => <ChefCard {...chef} />)
+                    : retrievedChefs.items
+                        .filter(chef => cuisines[chef.cuisine])
+                        .map(chef => <ChefCard {...chef} />)}
+                </>
+              )}
         </ul>
       </div>
     </PageContainer>
