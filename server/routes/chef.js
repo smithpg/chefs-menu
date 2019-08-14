@@ -116,5 +116,5 @@ async function normalizeLocation(location) {
 function isURLEncodedCoordPair(locationInput) {
   // Check whether input is already in coordinate form (e.g. for cases when customer
   // has used geolocation browser API rather than manual address input)
-  return /-?\d{1,3}(\.\d+)? -?\d{1,3}(\.\d+)?$/.test(locationInput);
+  return /-?\d{1,3}(\.\d+)?\+-?\d{1,3}(\.\d+)?$/.test(locationInput);
 }
