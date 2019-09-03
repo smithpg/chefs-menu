@@ -49,6 +49,10 @@ function Menubutton(props) {
   function handleClose() {
     setAnchorEl(null);
   }
+  function handleLogout() {
+    props.history.push(`/login`)
+
+  }
   const classes = useStyles();
   return (
     <div>
