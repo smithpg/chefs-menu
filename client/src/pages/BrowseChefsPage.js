@@ -10,6 +10,8 @@ import Navbar from "../components/Navbar";
 import Chip from "../components/Chip";
 import Button from "../components/Button";
 import TextField from "../components/TextField";
+import LocationSearchInput from "../components/LocationSearchInput";
+
 import ChefCard from "../components/ChefCard";
 import SimpleMenu from "../components/MenuButton";
 
@@ -137,7 +139,7 @@ function BrowseChefsPage({ classes, ...rest }) {
       </Navbar>
 
       <div className="paneLeft">
-        <TextField label="Location" IconComponent={TiLocation} />
+        <LocationSearchInput label="Location" IconComponent={TiLocation} />
         <span id="cuisine-label">Cuisine</span>
         {selectedCuisines.length > 0 && (
           <ul className="chip-list selected">{selectedCuisines}</ul>

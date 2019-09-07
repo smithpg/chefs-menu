@@ -17,7 +17,7 @@ const Container = styled.div`
     border: 1px solid rgba(0, 0, 0, 0.1);
     padding: 1rem;
     display: block;
-    width: 250px;
+    /* width: 250px; */
     margin: 5px 0px;
 
     font-size: 0.75rem;
@@ -69,7 +69,7 @@ export default function TextField({
       <Container error={error}>
         <label htmlFor={name}>{label}</label>
 
-        <InputContainer style={{ width: "250px" }}>
+        <InputContainer>
           <input type="text" name={name} {...rest} />
           <IconComponent
             onClick={onClickIcon}
