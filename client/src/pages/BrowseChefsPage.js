@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import useResource from "../hooks/useResource";
 import styled from "styled-components";
 
 import { Route, Link, Switch } from "react-router-dom";
 import { TiDelete, TiLocation } from "react-icons/ti";
+import { callAPI } from "../helpers/api";
 
 import { layout, colors } from "../themes/theme";
 import Navbar from "../components/Navbar";
@@ -81,7 +81,7 @@ const PageContainer = styled.div`
 
 function BrowseChefsPage({ classes, ...rest }) {
   let { resource: retrievedChefs } = useResource("chef");
-
+  let [location, setLocation] = useState("");
   let [cuisines, setCuisines] = useState(
     cuisinesArray.reduce(
       (accum, cuisineName) => {
@@ -91,6 +91,29 @@ function BrowseChefsPage({ classes, ...rest }) {
       { all: true }
     )
   );
+
+  function onChangeLocation(e) {
+    setLocation(e.target.value);
+  }
+
+  async function onSubmit() {
+    const endpoint = `chef${
+      location ? `?location=${location.replace(/\s/, "+")}` : null
+    }`;
+
+    // Set loading flag
+    setChefs({
+      ...retrievedChefs,
+      loading: true
+    });
+
+    const response = await callAPI({ endpoint });
+
+    setChefs({
+      loading: false,
+      items: response
+    });
+  }
 
   function toggleCuisine(cuisineName) {
     if (cuisineName !== "all" && cuisines.all) {
@@ -152,17 +175,17 @@ function BrowseChefsPage({ classes, ...rest }) {
       <div className="paneRight">
         <h2>Available Chefs</h2>
         <ul className="chef-container">
-          {!retrievedChefs ? (
-            "loading..."
-          ) : (
-            <>
-              {cuisines["all"]
-                ? retrievedChefs.map(chef => <ChefCard {...chef} />)
-                : retrievedChefs
-                    .filter(chef => cuisines[chef.cuisine])
-                    .map(chef => <ChefCard {...chef} />)}
-            </>
-          )}
+          {retrievedChefs.loading
+            ? "loading..."
+            : retrievedChefs.items && (
+                <>
+                  {cuisines["all"]
+                    ? retrievedChefs.items.map(chef => <ChefCard {...chef} />)
+                    : retrievedChefs.items
+                        .filter(chef => cuisines[chef.cuisine])
+                        .map(chef => <ChefCard {...chef} />)}
+                </>
+              )}
         </ul>
       </div>
     </PageContainer>
