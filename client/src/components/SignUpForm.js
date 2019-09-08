@@ -52,7 +52,7 @@ function validateField(fieldName, fieldValues) {
   return validators[fieldName](fieldValues);
 }
 
-function SignUpForm({ onSubmit: submitForm, userType, history}) {
+function SignUpForm({ onSubmit: submitForm, userType, history }) {
   let [fieldValues, setFieldValues] = useState({
       name: "",
       email: "",
@@ -130,7 +130,7 @@ function SignUpForm({ onSubmit: submitForm, userType, history}) {
       }
     }
   }
-  const otherUser = userType==="chef" ? "customer":"chef"; 
+  const otherUser = userType === "chef" ? "customer" : "chef";
   const endpoint = `/signup/${otherUser}`;
   return (
     <form onSubmit={onSubmitAttempt}>
@@ -172,11 +172,13 @@ function SignUpForm({ onSubmit: submitForm, userType, history}) {
         helperText={errorMessages.confirmPassword}
         error={!!errorMessages.confirmPassword}
       />
-      <div  style={{
-            color: "inherit",
-            fontSize: "0.75rem"
-          }}>
-      <Link to={endpoint}> Register as a {otherUser} </Link>
+      <div
+        style={{
+          color: "inherit",
+          fontSize: "0.75rem"
+        }}
+      >
+        <Link to={endpoint}> Register as a {otherUser} </Link>
       </div>
       <Button type="submit" style={{ marginTop: layout.spacing(4) }}>
         Sign Up

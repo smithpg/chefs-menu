@@ -4,6 +4,7 @@ import PlacesAutocomplete, {
   getLatLng
 } from "react-places-autocomplete";
 import styled from "styled-components";
+import _ from "lodash";
 
 import { colors } from "../themes/theme";
 import TextField from "./TextField";
@@ -33,25 +34,20 @@ const InputContainer = styled.div`
 `;
 
 export default class LocationSearchInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { address: "" };
-  }
-
-  handleChange = address => {
-    this.setState({ address });
+  handleChange = location => {
+    this.props.setLocation(location);
   };
 
-  handleSelect = address => {
-    this.setState({ address });
+  handleSelect = location => {
+    this.props.setLocation(location);
   };
 
   render() {
-    const textFieldProps = this.props;
+    const textFieldProps = _.omit(this.props, ["setLocation", "location"]);
 
     return (
       <PlacesAutocomplete
-        value={this.state.address}
+        value={this.props.location}
         onChange={this.handleChange}
         onSelect={this.handleSelect}
       >

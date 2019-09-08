@@ -1,4 +1,4 @@
- const createError = require("http-errors"),
+const createError = require("http-errors"),
   router = require("express").Router(),
   { Chef } = require("../models/index"),
   Joi = require("joi"),
@@ -8,11 +8,12 @@
 
 router.get("/", async (req, res, next) => {
   let chefs;
-
+  console.log(req.query.location);
   try {
     if (req.query.location) {
-      const normalizedLocation = await normalizeLocation(req.query.location);
-      chefs = await Chef.findChefsForLocation(normalizedLocation);
+      chefs = await Chef.findChefsForLocation(
+        new CoordPair(req.query.location.split(" "))
+      );
     } else {
       chefs = await Chef.find().select("-password");
     }
@@ -66,10 +67,8 @@ router.get("/:userId/availability", async (req, res, next) => {
     return next(createError(400, `Chef with id ${userId} could not be found.`));
   }
 
-
   res.status(200).send(chef.availability);
 });
-
 
 /**
  *  Set a Chef's profile fields
@@ -92,7 +91,7 @@ router.put(
      */
     const chef = await Chef.findByIdAndUpdate(userId, body, {
       useFindAndModify: false,
-      new:true
+      new: true
     });
     if (!chef) {
       return next(
@@ -101,7 +100,9 @@ router.put(
     }
     const token = req.headers.authorization.split(" ")[1];
 
-    res.status(200).send({token, usertype:"chef", name: chef.name, id: chef._id});
+    res
+      .status(200)
+      .send({ token, usertype: "chef", name: chef.name, id: chef._id });
   }
 );
 
@@ -123,7 +124,7 @@ router.put(
      */
     const chef = await Chef.findByIdAndUpdate(userId, body, {
       useFindAndModify: false,
-      new:true
+      new: true
     });
     if (!chef) {
       return next(
@@ -131,22 +132,34 @@ router.put(
       );
     }
     chef.availability_default = chef.availability;
-    const week_days = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-    function setAvailable_days(week_day){
-      if(chef.availability[week_day].length>0){
+    const week_days = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ];
+    function setAvailable_days(week_day) {
+      if (chef.availability[week_day].length > 0) {
         chef.available_days[week_day] = true;
-      }else{
+      } else {
         chef.available_days[week_day] = false;
       }
     }
     week_days.forEach(setAvailable_days);
-    chef.save()
+    chef.save();
     const token = req.headers.authorization.split(" ")[1];
-    res.status(200).send({availability:chef.availability,token, usertype:"chef", name: chef.name, id: chef._id});
+    res.status(200).send({
+      availability: chef.availability,
+      token,
+      usertype: "chef",
+      name: chef.name,
+      id: chef._id
+    });
   }
 );
-
-
 
 router.post("/:userId/avatar", fileUploadService, async (req, res) => {
   const fileURL = req.file.location;
@@ -158,7 +171,6 @@ router.post("/:userId/avatar", fileUploadService, async (req, res) => {
   res.status(201).send(JSON.stringify(fileURL));
 });
 
-
 router.post("/:userId/chef_background", fileUploadService, async (req, res) => {
   const fileURL = req.file.location;
   // Add URL for uploaded photo to user document
@@ -167,8 +179,6 @@ router.post("/:userId/chef_background", fileUploadService, async (req, res) => {
   // Respond with 201
   res.status(201).send(JSON.stringify(fileURL));
 });
-
-
 
 module.exports = router;
 
@@ -181,17 +191,8 @@ function validateChefProfileUpdate(update) {
   return Joi.validate(update, schema);
 }
 
-async function normalizeLocation(location) {
-  if (!isURLEncodedCoordPair(location)) {
-    return await getCoordinates(location);
-  } else {
-    location = location.split(" ").map(substr => Number(substr));
-    return new CoordPair(location);
-  }
-}
-
 function isURLEncodedCoordPair(locationInput) {
   // Check whether input is already in coordinate form (e.g. for cases when customer
   // has used geolocation browser API rather than manual address input)
-  return /-?\d{1,3}(\.\d+)? -?\d{1,3}(\.\d+)?$/.test(locationInput);
+  return /-?\d{1,3}(\.\d+)?(\+|(\%20))-?\d{1,3}(\.\d+)?$/.test(locationInput);
 }

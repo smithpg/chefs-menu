@@ -96,7 +96,7 @@ function generateDish(chefId) {
     price: faker.commerce.price(),
     numPeopleServed: _.random(1, 25),
     chef: chefId,
-    cuisine: _.sample(cuisinesArray),
+    cuisines: [_.sample(cuisinesArray)],
     ingredients: faker.random.words(),
     requirements: faker.random.words(),
     dishImg: faker.image.food()
