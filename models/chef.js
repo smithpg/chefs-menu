@@ -55,17 +55,17 @@ const chefSchema = new Schema({
  *  Then, filter those chefs to remove all those whose stored travelRadius
  *  is less than travel distance that would be required.
  */
-chefSchema.statics.findChefsForLocation = async function(customerCoordinates) {
+chefSchema.statics.findChefsForLocation = async function(locationCoordinates) {
   // MongoDB expects coordinates in reverse of typical ordering
   // i.e. <longitude, latitude> instead of <latitude, longitude>
 
-  console.log(`customerCoordinates: ${customerCoordinates}`);
+  console.log(`locationCoordinates: ${locationCoordinates}`);
 
   const chefsWithinMaxTravelDistance = await this.find({
     location: {
       $geoWithin: {
         $centerSphere: [
-          customerCoordinates.get().reverse(), // reversed for geoJson ordering
+          locationCoordinates.get().reverse(), // reversed for geoJson ordering
           MAX_TRAVEL_RADIUS / 3963.2
         ]
       }
@@ -78,7 +78,7 @@ chefSchema.statics.findChefsForLocation = async function(customerCoordinates) {
     const chefCoordinates = CoordPair.fromGeoJsonPoint(chef.location);
 
     return (
-      chefCoordinates.getDistanceFrom(customerCoordinates) <= chef.travelRadius
+      chefCoordinates.getDistanceFrom(locationCoordinates) <= chef.travelRadius
     );
   });
 

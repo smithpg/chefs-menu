@@ -17,7 +17,7 @@ const Container = styled.div`
     border: 1px solid rgba(0, 0, 0, 0.1);
     padding: 1rem;
     display: block;
-    width: 250px;
+    width: 100%;
     margin: 5px 0px;
 
     font-size: 0.75rem;
@@ -53,6 +53,7 @@ const Container = styled.div`
 
 const InputContainer = styled.div`
   position: relative;
+  width: 250px;
 `;
 
 export default function TextField({
@@ -69,7 +70,7 @@ export default function TextField({
       <Container error={error}>
         <label htmlFor={name}>{label}</label>
 
-        <InputContainer style={{ width: "250px" }}>
+        <InputContainer>
           <input type="text" name={name} {...rest} />
           <IconComponent
             onClick={onClickIcon}
@@ -90,7 +91,9 @@ export default function TextField({
     return (
       <Container error={error}>
         <label htmlFor={name}>{label}</label>
-        <input type="text" name={name} {...rest} />
+        <InputContainer>
+          <input type="text" name={name} {...rest} />
+        </InputContainer>
 
         <span>{helperText}</span>
       </Container>

@@ -59,13 +59,22 @@ const ChefCard = ({
   avatar,
   strlocation,
   description,
-  cuisine,
+  cuisines,
   history,
   _id
 }) => {
   function redirectToChefProfile() {
     history.push(`/chef/${_id}`);
   }
+
+  const cuisineList =
+    cuisines.length > 0
+      ? cuisines.map(cuisine => (
+          <Chip style={{ margin: "0px" }}>{cuisine}</Chip>
+        ))
+      : null;
+
+  console.log(cuisineList);
 
   return (
     <Container onClick={redirectToChefProfile}>
@@ -74,9 +83,7 @@ const ChefCard = ({
         <h1>{name}</h1>
         <h3>{strlocation}</h3>
       </div>
-      {cuisine ? (
-        <Chip style={{ margin: "0px" }}>{cuisine}</Chip>
-      ) : (
+      {cuisineList || (
         <hr
           style={{
             backgroundColor: colors.brand,

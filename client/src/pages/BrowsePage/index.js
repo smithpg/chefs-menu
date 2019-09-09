@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import useResource from "../../hooks/useResource";
 import styled from "styled-components";
-
+import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import { Route, Link, Switch } from "react-router-dom";
 import { TiDelete, TiLocation } from "react-icons/ti";
 
@@ -12,6 +12,9 @@ import Button from "../../components/Button";
 import TextField from "../../components/TextField";
 import ChefCard from "../../components/ChefCard";
 import SimpleMenu from "../../components/MenuButton";
+
+import { callAPI } from "../../helpers/api";
+import LocationSearchInput from "../../components/LocationSearchInput";
 
 const cuisinesArray = [
   "American",
@@ -78,8 +81,11 @@ const PageContainer = styled.div`
 `;
 
 function BrowseChefsPage({ classes, ...rest }) {
-  let { resource: retrievedChefs } = useResource("chef");
-
+  let [retrievedChefs, setChefs] = useState({
+    loading: false,
+    items: []
+  });
+  let [location, setLocation] = useState("");
   let [cuisines, setCuisines] = useState(
     cuisinesArray.reduce(
       (accum, cuisineName) => {
@@ -89,6 +95,36 @@ function BrowseChefsPage({ classes, ...rest }) {
       { all: true }
     )
   );
+
+  async function onSubmit() {
+    let endpoint = "chef";
+
+    // Get coordinates for entered address, if applicable
+    if (location) {
+      await geocodeByAddress(location)
+        .then(results => getLatLng(results[0]))
+        .then(
+          latLng =>
+            (endpoint += `?location=${latLng.lat.toFixed(
+              2
+            )}+${latLng.lng.toFixed(2)}`)
+        )
+        .catch(error => console.error("Error", error));
+    }
+
+    // Set loading flag
+    setChefs({
+      ...retrievedChefs,
+      loading: true
+    });
+
+    const response = await callAPI({ endpoint });
+
+    setChefs({
+      loading: false,
+      items: response
+    });
+  }
 
   function toggleCuisine(cuisineName) {
     if (cuisineName !== "all" && cuisines.all) {
@@ -137,7 +173,12 @@ function BrowseChefsPage({ classes, ...rest }) {
       </Navbar>
 
       <div className="paneLeft">
-        <TextField label="Location" IconComponent={TiLocation} />
+        <LocationSearchInput
+          label="Location"
+          IconComponent={TiLocation}
+          location={location}
+          setLocation={setLocation}
+        />
         <span id="cuisine-label">Cuisine</span>
         {selectedCuisines.length > 0 && (
           <ul className="chip-list selected">{selectedCuisines}</ul>
@@ -145,22 +186,26 @@ function BrowseChefsPage({ classes, ...rest }) {
         {unselectedCuisines && (
           <ul className="chip-list">{unselectedCuisines}</ul>
         )}
+
+        <Button onClick={onSubmit}>Submit</Button>
       </div>
 
       <div className="paneRight">
         <h2>Available Chefs</h2>
         <ul className="chef-container">
-          {!retrievedChefs ? (
-            "loading..."
-          ) : (
-            <>
-              {cuisines["all"]
-                ? retrievedChefs.map(chef => <ChefCard {...chef} />)
-                : retrievedChefs
-                    .filter(chef => cuisines[chef.cuisine])
-                    .map(chef => <ChefCard {...chef} />)}
-            </>
-          )}
+          {retrievedChefs.loading
+            ? "loading..."
+            : retrievedChefs.items && (
+                <>
+                  {cuisines["all"]
+                    ? retrievedChefs.items.map(chef => <ChefCard {...chef} />)
+                    : retrievedChefs.items
+                        .filter(chef =>
+                          chef.cuisines.some(cuisine => cuisines[cuisine])
+                        )
+                        .map(chef => <ChefCard {...chef} />)}
+                </>
+              )}
         </ul>
       </div>
     </PageContainer>
