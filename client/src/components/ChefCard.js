@@ -22,7 +22,7 @@ const Container = styled.li`
   margin: 0px 10px 10px 0px;
   background-color: white;
 
-  animation: ${fadeIn} 1000;
+  animation: ${fadeIn} 1000ms;
   transition: transform 200ms;
   &:hover {
     transform: translate(0px, -5px);

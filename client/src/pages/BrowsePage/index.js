@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import useResource from "../hooks/useResource";
+import useResource from "../../hooks/useResource";
 import styled from "styled-components";
 
 import { Route, Link, Switch } from "react-router-dom";
 import { TiDelete, TiLocation } from "react-icons/ti";
 
-import { layout, colors } from "../themes/theme";
-import Navbar from "../components/Navbar";
-import Chip from "../components/Chip";
-import Button from "../components/Button";
-import TextField from "../components/TextField";
-import ChefCard from "../components/ChefCard";
-import SimpleMenu from "../components/MenuButton";
+import { layout, colors } from "../../themes/theme";
+import Navbar from "../../components/Navbar";
+import Chip from "../../components/Chip";
+import Button from "../../components/Button";
+import TextField from "../../components/TextField";
+import ChefCard from "../../components/ChefCard";
+import SimpleMenu from "../../components/MenuButton";
 
 const cuisinesArray = [
   "American",
