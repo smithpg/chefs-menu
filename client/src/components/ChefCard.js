@@ -68,11 +68,20 @@ const ChefCard = ({
   }
 
   const cuisineList =
-    cuisines.length > 0
-      ? cuisines.map(cuisine => (
-          <Chip style={{ margin: "0px" }}>{cuisine}</Chip>
-        ))
-      : null;
+    cuisines.length > 0 ? (
+      <ul
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          padding: 0
+        }}
+      >
+        {cuisines.map(cuisine => (
+          <Chip style={{ margin: "3px" }}>{cuisine}</Chip>
+        ))}
+      </ul>
+    ) : null;
 
   console.log(cuisineList);
 
