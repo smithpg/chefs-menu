@@ -198,12 +198,14 @@ function BrowseChefsPage({ classes, ...rest }) {
             : retrievedChefs.items && (
                 <>
                   {cuisines["all"]
-                    ? retrievedChefs.items.map(chef => <ChefCard {...chef} />)
+                    ? retrievedChefs.items.map(chef => (
+                        <ChefCard {...chef} key={chef._id} />
+                      ))
                     : retrievedChefs.items
                         .filter(chef =>
                           chef.cuisines.some(cuisine => cuisines[cuisine])
                         )
-                        .map(chef => <ChefCard {...chef} />)}
+                        .map(chef => <ChefCard {...chef} key={chef._id} />)}
                 </>
               )}
         </ul>
