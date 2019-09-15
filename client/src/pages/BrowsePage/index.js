@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import useResource from "../../hooks/useResource";
 import styled from "styled-components";
 import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import { Route, Link, Switch } from "react-router-dom";
@@ -10,9 +11,8 @@ import Navbar from "../components/Navbar";
 import Chip from "../components/Chip";
 import Button from "../components/Button";
 import LocationSearchInput from "../components/LocationSearchInput";
-
-import ChefCard from "../components/ChefCard";
-import SimpleMenu from "../components/MenuButton";
+import ChefCard from "../../components/ChefCard";
+import SimpleMenu from "../../components/MenuButton";
 
 const cuisinesArray = [
   "American",

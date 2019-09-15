@@ -3,11 +3,12 @@ import styled from "styled-components";
 
 import { Route, Link, Switch } from "react-router-dom";
 
-import { layout } from "../themes/theme";
-import Navbar from "../components/Navbar";
-import Button from "../components/Button";
-import SignUpForm from "../components/SignUpForm";
-import LogInForm from "../components/LogInForm";
+import { layout } from "../../themes/theme";
+import Navbar from "../../components/Navbar";
+import Button from "../../components/Button";
+import SignUpForm from "./SignUpForm";
+import LogInForm from "./LogInForm";
+import DemoModeSwitch from "./DemoModeSwitch";
 
 const PageContainer = styled.div`
   display: flex;
@@ -63,6 +64,14 @@ function AuthPage({ classes, ...rest }) {
 
   return (
     <PageContainer className="pageContainer">
+      <DemoModeSwitch
+        style={{
+          position: "absolute",
+          bottom: 10,
+          left: "calc(50vw - 250px)",
+          width: 500
+        }}
+      />
       <Navbar transparent>
         <Switch>
           <Route path="/login">

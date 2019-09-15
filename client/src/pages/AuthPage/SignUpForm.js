@@ -1,13 +1,13 @@
 import React, { useState, useContext } from "react";
 import { validate } from "email-validator";
 
-import Context from "../store/createContext";
-import { layout } from "../themes/theme";
-import Snackbar from "./Snackbar";
-import Button from "./Button";
-import TextField from "./TextField";
-import PasswordInput from "./PasswordInput";
-import { callAPI } from "../helpers/api";
+import Context from "../../store/createContext";
+import { layout } from "../../themes/theme";
+import Snackbar from "../../components/Snackbar";
+import Button from "../../components/Button";
+import TextField from "../../components/TextField";
+import PasswordInput from "../../components/PasswordInput";
+import { callAPI } from "../../helpers/api";
 import { Link, withRouter } from "react-router-dom";
 
 // Each function is passed the object containing all field values in case of field interdependencies

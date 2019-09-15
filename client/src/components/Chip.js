@@ -6,7 +6,7 @@ import { fadeIn } from "../constants/animations";
 const Container = styled.span`
   display: flex;
   align-items: center;
-  animation: ${fadeIn} 2000ms once ease-out;
+  animation: ${fadeIn} 200ms ease-out;
 
   background: ${({ outline }) => (outline ? "white" : colors.brandLight)};
   color: ${({ outline }) => (outline ? colors.brand : "white")};

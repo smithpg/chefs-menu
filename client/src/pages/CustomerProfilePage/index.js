@@ -2,14 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-import Button from "../components/Button";
-import Navbar from "../components/Navbar";
-import NameCard from "../components/CustomerNameCard";
-import SimpleMenu from "../components/MenuButton";
-import { layout, colors } from "../themes/theme";
+import Button from "../../components/Button";
+import Navbar from "../../components/Navbar";
+import NameCard from "../../components/CustomerNameCard";
+import SimpleMenu from "../../components/MenuButton";
+import { layout, colors } from "../../themes/theme";
 import { useContext } from "react";
-import AuthContext from "../store/createContext";
-import useResource from "../hooks/useResource";
+import AuthContext from "../../store/createContext";
+import useResource from "../../hooks/useResource";
 
 const PageContainer = styled.div`
   display: flex;

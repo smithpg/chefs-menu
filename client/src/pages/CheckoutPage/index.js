@@ -1,15 +1,15 @@
 import React, { useState, useContext } from "react";
-import useToggle from "../hooks/useToggle";
+import useToggle from "../../hooks/useToggle";
 import { Elements, injectStripe } from "react-stripe-elements";
 import styled from "styled-components";
 
-import Context from "../store/createContext";
-import { callAPI } from "../helpers/api";
-import { layout, colors } from "../themes/theme";
-import Snackbar from "../components/Snackbar";
-import Navbar from "../components/Navbar";
-import CheckoutForm from "../components/CheckoutForm";
-import OrderDetails from "../components/OrderDetails";
+import Context from "../../store/createContext";
+import { callAPI } from "../../helpers/api";
+import { layout, colors } from "../../themes/theme";
+import Snackbar from "../../components/Snackbar";
+import Navbar from "../../components/Navbar";
+import CheckoutForm from "../../components/CheckoutForm";
+import OrderDetails from "../../components/OrderDetails";
 
 const PageContainer = styled.div`
   display: flex;
@@ -60,7 +60,7 @@ const CheckoutPage = ({ stripe }) => {
     [paymentComplete, togglePaymentComplete] = useToggle(false),
     [error, setError] = useState(null),
     { order, user } = useContext(Context);
-  console.log("Order context:",order);
+  console.log("Order context:", order);
   async function onSubmit(e) {
     e.preventDefault();
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
-import { Elements, StripeProvider } from "react-stripe-elements";
+import { StripeProvider } from "react-stripe-elements";
 
 import CheckoutPage from "./pages/CheckoutPage";
 import ContextProvider from "./store/Provider";
@@ -8,7 +8,7 @@ import AuthPage from "./pages/AuthPage";
 import ChefPage from "./pages/ChefProfilePage";
 import CustomerPage from "./pages/CustomerProfilePage";
 import "./App.css";
-import BrowseChefsPage from "./pages/BrowseChefsPage";
+import BrowseChefsPage from "./pages/BrowsePage";
 
 //TODO: Implement this
 function browserHasToken() {
@@ -17,7 +17,7 @@ function browserHasToken() {
 
 function App() {
   // index.js
-console.log(process.env);
+  console.log(process.env);
   return (
     <StripeProvider apiKey="pk_test_QZuuqCt3IbDZJLInrdvBOs1u001H7Nw9LN">
       <ContextProvider>

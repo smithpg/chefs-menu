@@ -94,7 +94,8 @@ export default function Namecard({ chef, userIsOwner }) {
     strlocation: chef.strlocation,
     description: chef.description,
     avatar: chef.avatar,
-    background: chef.background,
+    background:
+      chef.background || "https://source.unsplash.com/1600x900/?cuisine",
     cuisines: chef.cuisines
   });
   function setValuesCuisines(cuisines) {

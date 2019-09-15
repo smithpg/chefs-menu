@@ -22,7 +22,7 @@ const Container = styled.li`
   margin: 0px 10px 10px 0px;
   background-color: white;
 
-  animation: ${fadeIn} 1000;
+  animation: ${fadeIn} 1000ms;
   transition: transform 200ms;
   &:hover {
     transform: translate(0px, -5px);
@@ -68,11 +68,20 @@ const ChefCard = ({
   }
 
   const cuisineList =
-    cuisines.length > 0
-      ? cuisines.map(cuisine => (
-          <Chip style={{ margin: "0px" }}>{cuisine}</Chip>
-        ))
-      : null;
+    cuisines.length > 0 ? (
+      <ul
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          padding: 0
+        }}
+      >
+        {cuisines.map(cuisine => (
+          <Chip style={{ margin: "3px" }}>{cuisine}</Chip>
+        ))}
+      </ul>
+    ) : null;
 
   return (
     <Container onClick={redirectToChefProfile}>

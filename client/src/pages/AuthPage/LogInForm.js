@@ -1,14 +1,14 @@
 import React, { useState, useContext } from "react";
 import { Link, withRouter } from "react-router-dom";
 
-import Snackbar from "./Snackbar";
-import TextField from "./TextField";
-import PasswordInput from "./PasswordInput";
-import Button from "./Button";
-import { layout } from "../themes/theme";
-import { callAPI } from "../helpers/api";
+import Snackbar from "../../components/Snackbar";
+import TextField from "../../components/TextField";
+import PasswordInput from "../../components/PasswordInput";
+import Button from "../../components/Button";
+import { layout } from "../../themes/theme";
+import { callAPI } from "../../helpers/api";
 
-import Context from "../store/createContext";
+import Context from "../../store/createContext";
 
 function LogInForm(props) {
   let [formValues, setFormValues] = useState({ email: "", password: "" }),

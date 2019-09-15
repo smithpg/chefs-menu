@@ -1,15 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 
-import Navbar from "../components/Navbar";
-import NameCard from "../components/ChefNameCard";
-import SimpleMenu from "../components/MenuButton";
-import ChefDashboard from "../components/Menu/ChefDashboard";
-import ReadOnlyMenu from "../components/Menu/ReadOnlyMenu";
-import { layout, colors } from "../themes/theme";
+import Navbar from "../../components/Navbar";
+import NameCard from "../../components/ChefNameCard";
+import SimpleMenu from "../../components/MenuButton";
+import ChefDashboard from "../../components/Menu/ChefDashboard";
+import ReadOnlyMenu from "../../components/Menu/ReadOnlyMenu";
+import { layout, colors } from "../../themes/theme";
 import { useContext } from "react";
-import AuthContext from "../store/createContext";
-import useResource from "../hooks/useResource";
+import AuthContext from "../../store/createContext";
+import useResource from "../../hooks/useResource";
 
 const PageContainer = styled.div`
   display: flex;
