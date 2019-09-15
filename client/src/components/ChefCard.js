@@ -74,8 +74,6 @@ const ChefCard = ({
         ))
       : null;
 
-  console.log(cuisineList);
-
   return (
     <Container onClick={redirectToChefProfile}>
       <img src={avatar} alt="Chef" />
