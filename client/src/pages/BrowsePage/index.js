@@ -5,12 +5,11 @@ import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import { Route, Link, Switch } from "react-router-dom";
 import { TiDelete, TiLocation } from "react-icons/ti";
 
-import useResource from "../hooks/useResource";
-import { layout, colors } from "../themes/theme";
-import Navbar from "../components/Navbar";
-import Chip from "../components/Chip";
-import Button from "../components/Button";
-import LocationSearchInput from "../components/LocationSearchInput";
+import { layout, colors } from "../../themes/theme";
+import Navbar from "../../components/Navbar";
+import Chip from "../../components/Chip";
+import Button from "../../components/Button";
+import LocationSearchInput from "../../components/LocationSearchInput";
 import ChefCard from "../../components/ChefCard";
 import SimpleMenu from "../../components/MenuButton";
 
