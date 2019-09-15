@@ -64,9 +64,9 @@ function generateUser() {
 function generateChef() {
   return {
     ...generateUser(),
-    travelRadius: _.random(10, 100),
+    travelRadius: _.random(10, 30),
     description: faker.lorem.sentence(),
-    cuisine: _.sample(cuisinesArray)
+    cuisines: _.sample(cuisinesArray)
   };
 }
 
