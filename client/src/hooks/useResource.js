@@ -1,28 +1,28 @@
 import { useState, useEffect } from "react";
 import { callAPI } from "../helpers/api";
 
-export default function useResource(endpoint, token) {
+export default function useResource(endpointInit, token) {
   const [resource, setResource] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  console.log(endpoint);
+  const [endpoint, setEndpoint] = useState(endpointInit);
   useEffect(() => {
     async function retrieveResource() {
       let config = token ? { endpoint, token } : { endpoint };
-      console.log("what is config",config);
+      console.log("what is config", config);
       try {
         setLoading(true);
-        const rsc = await callAPI(config)
+        const rsc = await callAPI(config);
         console.log(rsc);
         setResource(rsc);
         setLoading(false);
       } catch (error) {
         setError(error);
-        console.log("error",error);
+        console.log("error", error);
       }
     }
     retrieveResource();
   }, [endpoint, token]);
 
-  return { resource, error, loading };
+  return { resource, error, loading, setEndpoint };
 }
