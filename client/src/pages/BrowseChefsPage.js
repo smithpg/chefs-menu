@@ -4,7 +4,7 @@ import { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import { Route, Link, Switch } from "react-router-dom";
 import { TiDelete, TiLocation } from "react-icons/ti";
 
-import { callAPI } from "../helpers/api";
+import useResource from "../hooks/useResource";
 import { layout, colors } from "../themes/theme";
 import Navbar from "../components/Navbar";
 import Chip from "../components/Chip";
@@ -79,10 +79,7 @@ const PageContainer = styled.div`
 `;
 
 function BrowseChefsPage({ classes, ...rest }) {
-  let [retrievedChefs, setChefs] = useState({
-    loading: false,
-    items: []
-  });
+  let { resource: retrievedChefs, loading, setEndpoint } = useResource("chef");
   let [location, setLocation] = useState("");
   let [cuisines, setCuisines] = useState(
     cuisinesArray.reduce(
@@ -110,18 +107,7 @@ function BrowseChefsPage({ classes, ...rest }) {
         .catch(error => console.error("Error", error));
     }
 
-    // Set loading flag
-    setChefs({
-      ...retrievedChefs,
-      loading: true
-    });
-
-    const response = await callAPI({ endpoint });
-
-    setChefs({
-      loading: false,
-      items: response
-    });
+    setEndpoint(endpoint);
   }
 
   function toggleCuisine(cuisineName) {
@@ -191,19 +177,17 @@ function BrowseChefsPage({ classes, ...rest }) {
       <div className="paneRight">
         <h2>Available Chefs</h2>
         <ul className="chef-container">
-          {retrievedChefs.loading
+          {loading
             ? "loading..."
-            : retrievedChefs.items && (
-                <>
-                  {cuisines["all"]
-                    ? retrievedChefs.items.map(chef => <ChefCard {...chef} />)
-                    : retrievedChefs.items
-                        .filter(chef =>
-                          chef.cuisines.some(cuisine => cuisines[cuisine])
-                        )
-                        .map(chef => <ChefCard {...chef} />)}
-                </>
-              )}
+            : retrievedChefs.length > 0
+            ? cuisines["all"]
+              ? retrievedChefs.map(chef => <ChefCard {...chef} />)
+              : retrievedChefs
+                  .filter(chef =>
+                    chef.cuisines.some(cuisine => cuisines[cuisine])
+                  )
+                  .map(chef => <ChefCard {...chef} />)
+            : "No matching chefs found."}
         </ul>
       </div>
     </PageContainer>
