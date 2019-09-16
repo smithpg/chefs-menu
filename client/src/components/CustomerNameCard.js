@@ -52,7 +52,7 @@ const useStyles = makeStyles({
   },
   lower: {
     height: "48%",
-    width:"100%"
+    width: "100%"
   },
   leftpane: {
     width: "40%",
@@ -98,7 +98,7 @@ const useStyles = makeStyles({
   },
   boldbig: {
     fontWeight: "bold"
-  },
+  }
   // map:{
   //   width:"100%"
   // }
@@ -122,35 +122,20 @@ function Namecard({ customer, history, userIsOwner }) {
   });
   const { user, setUser } = useContext(AuthContext);
 
-  const [key, setKey] = useState("");
-  useEffect(() => {
-    async function getApikey() {
-      const apikey = await callAPI({
-        endpoint: "getenv/CHEF_MENU_GOOGLE_MAP",
-        method: "GET"
-      });
-      setKey(apikey);
-    }
-    getApikey();
-  }, []);
-
   useEffect(() => {
     async function getLatlnt() {
       const address = values.strlocation;
-      const googleapi = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${key}`;
-      if (key != undefined) {
-        fetch(googleapi)
-          .then(response => response.json())
-          .then(data => {
-            if (data.status === "OK") {
-              setLocation(data.results[0].geometry.location);
-            }
-          });
-      }
+      const googleapi = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GOOGLE_MAPS}`;
+      fetch(googleapi)
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === "OK") {
+            setLocation(data.results[0].geometry.location);
+          }
+        });
     }
     getLatlnt();
-
-  }, [key]);
+  }, [values.strlocation]);
 
   function handleSubmit() {
     history.push("/browse/chefs");
@@ -204,41 +189,37 @@ function Namecard({ customer, history, userIsOwner }) {
   }
 
   const StaticCard = (
-      <Card className={classes.card}>
-        <div className={classes.upper}>
-          <div className={classes.leftpane}>
-            <div className={classes.wrap}>
-              <img
-                className={classes.profile}
-                alt="profile"
-                src={values.avatar}
-              />
-              <span className={classes.name}> {values.name} </span>
-              <p className={classes.grey}> {values.strlocation} </p>
-              {userIsOwner ? (
-                <RequestButton onClick={toggleEditMode}>
-                  Edit Info
-                </RequestButton>
-              ) : (
-                <RequestButton onClick={handleSubmit}>
-                  Browse Chef
-                </RequestButton>
-              )}
-            </div>
-          </div>
-          <div className={classes.rightpane}>
-            <div className={classes.descwrap}>
-              <span className={classes.boldbig}>ABOUT ME:</span>
-              <p className={classes.grey}>{customer.description}</p>
-              <span className={classes.boldbig}>FAVORITE CUSINE: </span>
-              <CuisineList cuisineList={values.favorite} />
-            </div>
+    <Card className={classes.card}>
+      <div className={classes.upper}>
+        <div className={classes.leftpane}>
+          <div className={classes.wrap}>
+            <img
+              className={classes.profile}
+              alt="profile"
+              src={values.avatar}
+            />
+            <span className={classes.name}> {values.name} </span>
+            <p className={classes.grey}> {values.strlocation} </p>
+            {userIsOwner ? (
+              <RequestButton onClick={toggleEditMode}>Edit Info</RequestButton>
+            ) : (
+              <RequestButton onClick={handleSubmit}>Browse Chef</RequestButton>
+            )}
           </div>
         </div>
-        <div className={classes.lower}>
-          <GoogleMap location={location} apikey={key} zoom={13} />
+        <div className={classes.rightpane}>
+          <div className={classes.descwrap}>
+            <span className={classes.boldbig}>ABOUT ME:</span>
+            <p className={classes.grey}>{customer.description}</p>
+            <span className={classes.boldbig}>FAVORITE CUSINE: </span>
+            <CuisineList cuisineList={values.favorite} />
+          </div>
         </div>
-      </Card>
+      </div>
+      <div className={classes.lower}>
+        <GoogleMap location={location} zoom={13} />
+      </div>
+    </Card>
   );
 
   const EditModeCard = (
