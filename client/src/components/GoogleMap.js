@@ -10,7 +10,6 @@ import { callAPI } from "../helpers/api";
 import { useState, useEffect, useContext } from "react";
 
 function GoogleMap(props) {
-  console.log(props.apikey);
   const style = {
     width: "70%",
     height: "48%",
@@ -19,7 +18,7 @@ function GoogleMap(props) {
   const coords = { lat: props.location.lat, lng: props.location.lng };
   return (
     <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
-      <Map style={style} google={props.google} zoom={13} center={coords}>
+      <Map style={style} google={window.google} zoom={13} center={coords}>
         {/* <Circle
           radius={1200}
           center={{ lat: props.location.lat, lng: props.location.lng }}
@@ -42,6 +41,9 @@ function GoogleMap(props) {
     </div>
   );
 }
-export default GoogleApiWrapper(props => ({
-  apiKey: process.env.REACT_APP_GOOGLE_MAP
-}))(GoogleMap);
+
+export default GoogleMap;
+
+// export default GoogleApiWrapper(props => ({
+//   apiKey: process.env.REACT_APP_GOOGLE_MAP
+// }))(GoogleMap);
