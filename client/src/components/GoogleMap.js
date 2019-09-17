@@ -11,32 +11,14 @@ import { useState, useEffect, useContext } from "react";
 
 function GoogleMap(props) {
   const style = {
-    width: "70%",
-    height: "48%",
-    position: "relative"
+    height: "100%"
   };
   const coords = { lat: props.location.lat, lng: props.location.lng };
+  console.log(coords);
   return (
-    <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
+    <div style={{ position: "relative", height: "100%" }}>
       <Map style={style} google={window.google} zoom={13} center={coords}>
-        {/* <Circle
-          radius={1200}
-          center={{ lat: props.location.lat, lng: props.location.lng }}
-          strokeColor="transparent"
-          strokeOpacity={0}
-          strokeWeight={5}
-          fillColor="#f44336"
-          fillOpacity={0.2}
-        />
-        <Circle
-          radius={50}
-          center={{ lat: props.location.lat, lng: props.location.lng }}
-          strokeColor="transparent"
-          strokeOpacity={0}
-          strokeWeight={5}
-          fillColor="#f44336"
-          fillOpacity={0.8}
-        /> */}
+        <Marker name="User Location" position={coords} />
       </Map>
     </div>
   );
