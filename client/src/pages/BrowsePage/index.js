@@ -50,7 +50,7 @@ const PageContainer = styled.div`
   }
   .chef-container {
     display: flex;
-    // justify-content: center;
+    justify-content: center;
     flex-wrap: wrap;
     padding: 0px;
   }
@@ -180,12 +180,14 @@ function BrowseChefsPage({ classes, ...rest }) {
             ? "loading..."
             : retrievedChefs.length > 0
             ? cuisines["all"]
-              ? retrievedChefs.map(chef => <ChefCard {...chef} />)
+              ? retrievedChefs.map(chef => (
+                  <ChefCard {...chef} key={chef._id} />
+                ))
               : retrievedChefs
                   .filter(chef =>
                     chef.cuisines.some(cuisine => cuisines[cuisine])
                   )
-                  .map(chef => <ChefCard {...chef} />)
+                  .map(chef => <ChefCard {...chef} key={chef._id} />)
             : "No matching chefs found."}
         </ul>
       </div>

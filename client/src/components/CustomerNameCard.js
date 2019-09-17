@@ -59,20 +59,15 @@ const Card = styled.div`
   .rightUpper {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: center;
 
-    padding: 1rem;
     flex-grow: 1;
     padding: 3rem;
-
-    /* & > div {
-      display: flex;
-      flex-direction: column;
-    } */
   }
 
   .form-field {
     width: 100%;
+    margin-bottom: 1rem;
   }
 `;
 
@@ -188,7 +183,7 @@ function Namecard({ customer, history, userIsOwner }) {
     if (values.strlocation) {
       getLatlnt();
     }
-  }, [key, values.strlocation]);
+  }, [values.strlocation]);
 
   function handleSubmit() {
     history.push("/browse/chefs");
@@ -257,12 +252,12 @@ function Namecard({ customer, history, userIsOwner }) {
         <div className="rightUpper">
           <span className={classes.boldbig}>ABOUT ME:</span>
           <p className={classes.grey}>{customer.description}</p>
-          <span className={classes.boldbig}>FAVORITE CUSINE: </span>
+          <span className={classes.boldbig}>FAVORITE CUISINES: </span>
           <CuisineList cuisineList={values.favorite} />
         </div>
       </div>
       <div className="lower">
-        <GoogleMap location={location} apikey={key} zoom={13} />
+        <GoogleMap location={location} zoom={13} />
       </div>
     </>
   );
@@ -272,7 +267,7 @@ function Namecard({ customer, history, userIsOwner }) {
       <div className="leftUpper">
         <ImageUploader
           onSubmit={handleImageSubmit}
-          promptText="Click to upload a new background"
+          promptText="Click to upload a new profile picture"
         >
           <img className={classes.profile} alt="profile" src={values.avatar} />
         </ImageUploader>
@@ -296,7 +291,7 @@ function Namecard({ customer, history, userIsOwner }) {
         <RequestButton onClick={onSubmitAttempt}>Save Profile</RequestButton>
       </div>
       <div className="rightUpper">
-        <div>
+        <div className="">
           <span className={classes.boldbig}>ABOUT ME:</span>
           <TextField
             className="form-field"
@@ -308,7 +303,7 @@ function Namecard({ customer, history, userIsOwner }) {
             variant="outlined"
           />
         </div>
-        <div>
+        <div className="">
           <span className={classes.boldbig}>FAVORITE CUSINE: </span>
           <TextField
             className="form-field"

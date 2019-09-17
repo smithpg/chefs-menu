@@ -13,13 +13,15 @@ const Container = styled.li`
   list-style: none;
   flex-shrink: 1;
 
-  width: calc(33% - 20px);
-  max-width: 300px;
+  /* width: 33%; */
+  width: calc(33% - 10px);
+  /* max-width: 350px; */
+  /* flex-grow: 1; */
   height: 320px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
   padding: 20px 40px;
-  margin: 0px 10px 10px 0px;
+  margin: 0px 12px 12px 0px;
   background-color: white;
 
   animation: ${fadeIn} 1000ms;
