@@ -8,6 +8,8 @@ import { callAPI } from "../../helpers/api";
 import { layout, colors } from "../../themes/theme";
 import Snackbar from "../../components/Snackbar";
 import Navbar from "../../components/Navbar";
+import SimpleMenu from "../../components/MenuButton";
+
 import CheckoutForm from "../../components/CheckoutForm";
 import OrderDetails from "../../components/OrderDetails";
 
@@ -90,7 +92,9 @@ const CheckoutPage = ({ stripe }) => {
 
   return (
     <>
-      <Navbar />
+      <Navbar>
+        <SimpleMenu />
+      </Navbar>
       <PageContainer className="pageContainer">
         <div className="paneLeft">
           <h1>Checkout</h1>
