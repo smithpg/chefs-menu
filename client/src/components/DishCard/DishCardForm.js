@@ -20,7 +20,8 @@ const useStyles = makeStyles(theme => ({
   card: {
     minWidth: "70%",
     minHeight: "43%",
-    margin: 5
+    margin: 5,
+    display: "flex"
   },
 
   image: {
@@ -47,7 +48,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "space-between"
   },
   textField: {
-    fullWidth: "true"
+    margin: "0px 10px 10px 0px"
   },
   input: {
     display: "none"
@@ -142,8 +143,8 @@ export default function SimpleCard({
     <CardContainer>
       <form onSubmit={onSubmitAttempt}>
         <TextField
-          label="How many people to serve."
-          className="{classes.textField}"
+          label="Serves"
+          className={classes.textField}
           value={values.numPeopleServed}
           onChange={handleChange("numPeopleServed")}
           margin="dense"
@@ -151,8 +152,8 @@ export default function SimpleCard({
           type="number"
         />
         <TextField
-          label="name"
-          className="{classes.textField}"
+          label="Name"
+          className={classes.textField}
           value={values.name}
           onChange={handleChange("name")}
           margin="dense"
@@ -160,7 +161,7 @@ export default function SimpleCard({
         />
         <TextField
           label="Price"
-          className="{classes.textField}"
+          className={classes.textField}
           value={values.price}
           onChange={handleChange("price")}
           margin="dense"
@@ -171,7 +172,7 @@ export default function SimpleCard({
           label="Ingredients"
           multiline
           rowsMax="4"
-          className="{classes.textField}"
+          className={classes.textField}
           value={values.ingredients}
           onChange={handleChange("ingredients")}
           margin="dense"
@@ -179,8 +180,8 @@ export default function SimpleCard({
         />
 
         <TextField
-          label="requirements Stuff"
-          className="{classes.textField}"
+          label="Requirements"
+          className={classes.textField}
           value={values.requirements}
           multiline
           rowsMax="4"
