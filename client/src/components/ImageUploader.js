@@ -19,8 +19,7 @@ const ImageUploader = ({ onSubmit, promptText, imageId, children }) => {
         style={{
           position: "relative",
           display: "inline-block",
-          cursor: "pointer",
-          width: "100%"
+          cursor: "pointer"
         }}
       >
         <PositionedInput
