@@ -16,5 +16,7 @@ A live demo of the app can be found [here](https://chefs-menu.herokuapp.com)
 - File upload to AWS S3
 - Stripe Checkout flow
 
+## Authors
+
 * [Patrick Smith](https://github.com/smithpg)
 * [Jingchen Lei](https://github.com/lei29)
