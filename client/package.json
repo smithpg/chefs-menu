@@ -17,7 +17,7 @@
     "react-icons": "^3.7.0",
     "react-places-autocomplete": "^7.2.1",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.0.1",
+    "react-scripts": "^3.4.0",
     "react-stripe-elements": "^4.0.1",
     "styled-components": "^4.3.2"
   },
@@ -30,7 +30,7 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "proxy": "http://localhost:3001",
+  "proxy": "http://localhost:4000",
   "browserslist": {
     "production": [
       ">0.2%",
