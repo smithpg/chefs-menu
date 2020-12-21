@@ -23,10 +23,9 @@ const PageContainer = styled.div`
   .formContainer {
     display: flex;
     flex-direction: column;
-    /* align-items: ; */
     justify-content: center;
     padding: 12px 24px;
-    /* min-width: 300px; */
+
     @media (min-width: 400px) {
       background: white;
       box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.3);
@@ -36,6 +35,9 @@ const PageContainer = styled.div`
 
   h1 {
     font-weight: normal;
+    @media (max-width: 400px) {
+      font-size: 24px;
+    }
   }
 
   .image {
@@ -65,6 +67,12 @@ function AuthPage({ classes, ...rest }) {
    *  ... depending on the URL
    */
 
+  //todo: remove this
+  console.log(window.innerWidth);
+  Array.from(document.querySelectorAll("*")).map((DOMNode) => {
+    console.log(DOMNode.getBoundingClientRect());
+  });
+
   return (
     <PageContainer className="pageContainer">
       {/* <DemoModeSwitch
@@ -74,28 +82,18 @@ function AuthPage({ classes, ...rest }) {
           left: "calc(50vw - 250px)",
         }}
       /> */}
-      <Navbar transparent>
-        <Switch>
-          <Route path="/login">
-            <span>Don't have an account?</span>
-            <Link
-              style={{ textDecoration: "none", color: "inherit" }}
-              to="/signup/customer"
-            >
-              <Button>Sign Up</Button>
-            </Link>
-          </Route>
-          <Route path="/signup/:userType">
-            <span>Already a member?</span>
-            <Link
-              style={{ textDecoration: "none", color: "inherit" }}
-              to="/login"
-            >
-              <Button>Sign In</Button>
-            </Link>
-          </Route>
-        </Switch>
-      </Navbar>
+
+      <Switch>
+        <Route path="/login">
+          <Navbar
+            transparent
+            links={[{ link: "/signup/customer", text: "Sign Up" }]}
+          />
+        </Route>
+        <Route path="/signup/:userType">
+          <Navbar transparent links={[{ link: "/login", text: "Log In" }]} />
+        </Route>
+      </Switch>
 
       {isMobile ? null : (
         <img className="image" alt="bg img" src="/bg-img-sushi.png" />

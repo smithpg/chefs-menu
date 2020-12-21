@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useCallback } from "react";
 
 export default function useOnClickOutside(cb) {
-  const ref = useRef([]);
+  const ref = useRef(null);
 
   const register = useCallback((element) => {
-    ref.current.push(element);
+    ref.current = element;
   }, []);
 
   useEffect(() => {
@@ -22,13 +22,13 @@ export default function useOnClickOutside(cb) {
   function clickWasOutside(event) {
     // Return true if none of the registered elements
     // contain the target of passed event
-    return !ref.current.some((registeredElement) =>
-      registeredElement.contains(event.target)
-    );
+    console.log(ref.current);
+    return !ref.current.contains(event.target);
   }
   function onClick(event) {
-    if (clickWasOutside(event)) {
-      cb();
+    console.log(ref.current);
+    if (ref.current !== null && clickWasOutside(event)) {
+      cb(event);
     }
   }
 }
