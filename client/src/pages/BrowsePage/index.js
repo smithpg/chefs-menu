@@ -28,7 +28,7 @@ const cuisinesArray = [
   "Spanish",
   "Thai",
   "Turkish",
-  "Vietnamese"
+  "Vietnamese",
 ];
 
 const PageContainer = styled.div`
@@ -96,14 +96,14 @@ function BrowseChefsPage({ classes, ...rest }) {
     // Get coordinates for entered address, if applicable
     if (location) {
       await geocodeByAddress(location)
-        .then(results => getLatLng(results[0]))
+        .then((results) => getLatLng(results[0]))
         .then(
-          latLng =>
+          (latLng) =>
             (endpoint += `?location=${latLng.lat.toFixed(
               2
             )}+${latLng.lng.toFixed(2)}`)
         )
-        .catch(error => console.error("Error", error));
+        .catch((error) => console.error("Error", error));
     }
 
     setEndpoint(endpoint);
@@ -118,28 +118,28 @@ function BrowseChefsPage({ classes, ...rest }) {
 
     setCuisines({
       ...cuisines,
-      [cuisineName]: !cuisines[cuisineName]
+      [cuisineName]: !cuisines[cuisineName],
     });
   }
 
   const selectedCuisines = Object.entries(cuisines)
-      .filter(entry => entry[1])
-      .map(entry => (
+      .filter((entry) => entry[1])
+      .map((entry) => (
         <Chip as="li">
           {entry[0]}
           <TiDelete
             style={{
               marginLeft: " 5px",
               fontSize: "18px",
-              cursor: "pointer"
+              cursor: "pointer",
             }}
             onClick={toggleCuisine.bind(null, entry[0])}
           />
         </Chip>
       )),
     unselectedCuisines = Object.entries(cuisines)
-      .filter(entry => !entry[1])
-      .map(entry => (
+      .filter((entry) => !entry[1])
+      .map((entry) => (
         <Chip
           as="li"
           clickable
@@ -180,14 +180,14 @@ function BrowseChefsPage({ classes, ...rest }) {
             ? "loading..."
             : retrievedChefs.length > 0
             ? cuisines["all"]
-              ? retrievedChefs.map(chef => (
+              ? retrievedChefs.map((chef) => (
                   <ChefCard {...chef} key={chef._id} />
                 ))
               : retrievedChefs
-                  .filter(chef =>
-                    chef.cuisines.some(cuisine => cuisines[cuisine])
+                  .filter((chef) =>
+                    chef.cuisines.some((cuisine) => cuisines[cuisine])
                   )
-                  .map(chef => <ChefCard {...chef} key={chef._id} />)
+                  .map((chef) => <ChefCard {...chef} key={chef._id} />)
             : "No matching chefs found."}
         </ul>
       </div>

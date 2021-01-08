@@ -16,53 +16,67 @@ import ImageUploader from "./ImageUploader";
 
 const { brandLight, background } = colors;
 
-const RequestButton = styled(Button)`
-  color: ${brandLight};
-  background: white;
+const StyledButton = styled(Button)`
+  background-color: ${brandLight};
+  color: white;
   border-style: solid;
   border-width: 2px;
   border-color: ${brandLight};
-  width: 100%;
+  height: auto;
 
   &:hover,
   &:active {
     background: ${colors.brandTransparent};
   }
+
+  @media (max-width: 400px) {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    width: 100vw;
+    z-index: 99;
+  }
 `;
 
 const Card = styled.div`
-  background: white;
-  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   transition: all 100ms;
 
-  .upper {
+  width: 500px;
+  max-width: 100vw;
+  padding: 0px 12px;
+
+  .user-info__title {
     display: flex;
+    align-items: center;
     border-bottom: 2px solid ${background};
   }
 
+  .user-info__name {
+    text-align: left;
+    flex-grow: 1;
+    padding: 0px 12px;
+
+    font-weight: bold;
+    font-size: 20px;
+  }
+
+  .user-info__avatar {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .user-info__edit-btn {
+    justify-self: flex-end;
+  }
+
+  .user-info__sub-heading {
+    font-weight: bold;
+  }
   .lower {
     height: 250px;
-  }
-
-  .leftUpper {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    flex-basis: 40%;
-    text-align: center;
-    border-right: 2px solid ${background};
-    min-height: 300px;
-  }
-
-  .rightUpper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    flex-grow: 1;
-    padding: 3rem;
   }
 
   .form-field {
@@ -71,99 +85,19 @@ const Card = styled.div`
   }
 `;
 
-const useStyles = makeStyles({
-  // cardContainer: {
-  //   display: "flex",
-  //   justifyContent: "center",
-
-  //   width: "100%",
-  //   height: "87%",
-  //   position: "absolute",
-  //   bottom: 0,
-  //   background: colors.background
-  // },
-  // upper: {
-  //   display: "flex",
-  //   height: "52%"
-  // },
-  // lower: {
-  //   height: "48%"
-  // },
-  // leftpane: {
-  //   width: "40%",
-  //   height: "100%"
-  // },
-  // rightpane: {
-  //   width: "60%",
-  //   height: "100%"
-  // },
-  card: {
-    width: "100%",
-    height: "100%",
-    margin: 20
-  },
-  // wrap: {
-  //   height: "100%",
-  //   display: "flex",
-  //   justifyContent: "space-around",
-  //   flexDirection: "column",
-  //   alignItems: "center",
-  //   padding: 40,
-
-  //   borderRightColor: colors.background,
-  //   borderRightStyle: "solid",
-  //   borderRightWidth: "5px",
-  //   borderBottomColor: colors.background,
-  //   borderBottomStyle: "solid",
-  //   borderBottomWidth: "5px",
-  //   fontFamily: "Montserrat"
-  // },
-  name: {
-    fontWeight: "bold",
-    fontSize: 20
-  },
-  grey: {
-    color: "grey"
-  },
-  // descwrap: {
-  //   height: "100%",
-  //   display: "flex",
-  //   justifyContent: "space-around",
-  //   flexDirection: "column",
-  //   padding: 40
-  // },
-  boldbig: {
-    fontWeight: "bold",
-    display: "block"
-  },
-  profile: {
-    display: "block",
-    height: 100,
-    width: 100,
-    borderRadius: "50%",
-    objectFit: "cover",
-    margin: "10px auto"
-  }
-  // map:{
-  //   width:"100%"
-  // }
-});
-//TODO: pass in props and get data from props
-
 function Namecard({ customer, history, userIsOwner }) {
-  const classes = useStyles();
   const [values, setValues] = useState({
     name: customer.name,
     strlocation: customer.strlocation,
     description: customer.description,
     favorite: customer.favorite,
-    avatar: customer.avatar
+    avatar: customer.avatar,
   });
   const [isEditing, toggleEditMode] = useToggle(false);
 
   const [location, setLocation] = useState({
     lat: "",
-    lng: ""
+    lng: "",
   });
   const { user, setUser } = useContext(AuthContext);
 
@@ -172,8 +106,8 @@ function Namecard({ customer, history, userIsOwner }) {
       const address = values.strlocation;
       const googleapi = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GOOGLE_MAPS}`;
       fetch(googleapi)
-        .then(response => response.json())
-        .then(data => {
+        .then((response) => response.json())
+        .then((data) => {
           if (data.status === "OK") {
             setLocation(data.results[0].geometry.location);
           }
@@ -188,7 +122,7 @@ function Namecard({ customer, history, userIsOwner }) {
   function handleSubmit() {
     history.push("/browse/chefs");
   }
-  const handleChange = name => event => {
+  const handleChange = (name) => (event) => {
     if (name === "favorite") {
       setValues({ ...values, [name]: event.target.value.split(",") });
     } else {
@@ -208,7 +142,7 @@ function Namecard({ customer, history, userIsOwner }) {
         endpoint: endpoint,
         method: "POST",
         body: formData,
-        isForm: true
+        isForm: true,
       });
       setValues({ ...values, avatar: imgURL });
     } catch (error) {
@@ -223,10 +157,10 @@ function Namecard({ customer, history, userIsOwner }) {
         endpoint: `customer/${customer._id}`,
         method: "PUT",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: values,
-        token: user.token
+        token: user.token,
       });
 
       // setUser(updatedCustomer);
@@ -238,84 +172,92 @@ function Namecard({ customer, history, userIsOwner }) {
 
   const StaticCard = (
     <>
-      <div className="upper">
-        <div className="leftUpper">
-          <img className={classes.profile} alt="profile" src={values.avatar} />
-          <div className={classes.name}> {values.name} </div>
-          <p className={classes.grey}> {values.strlocation} </p>
+      <div className="user-info">
+        <div className="user-info__title">
+          <img className="user-info__avatar" alt="avatar" src={values.avatar} />
+          <div className="user-info__name"> {values.name} </div>
           {userIsOwner ? (
-            <RequestButton onClick={toggleEditMode}>Edit Info</RequestButton>
-          ) : (
-            <RequestButton onClick={handleSubmit}>Browse Chef</RequestButton>
-          )}
+            <StyledButton
+              onClick={toggleEditMode}
+              className="user-info__edit-btn"
+            >
+              Edit Info
+            </StyledButton>
+          ) : null}
+        </div>
+        <div className="user-info__details">
+          <p> {values.strlocation} </p>
         </div>
         <div className="rightUpper">
-          <span className={classes.boldbig}>ABOUT ME:</span>
-          <p className={classes.grey}>{customer.description}</p>
-          <span className={classes.boldbig}>FAVORITE CUISINES: </span>
-          <CuisineList cuisineList={values.favorite} />
+          <span className="user-info__sub-heading">ABOUT ME:</span>
+          <p>{customer.description}</p>
+          <span className="user-info__sub-heading">FAVORITE CUISINES: </span>
+          {values.favorite.length > 0 ? (
+            <CuisineList cuisineList={values.favorite} />
+          ) : (
+            <p>You have not added any favorites.</p>
+          )}
         </div>
       </div>
       <div className="lower">
+        <span className="user-info__sub-heading">LOCATION: </span>
         <GoogleMap location={location} zoom={13} />
       </div>
     </>
   );
 
   const EditModeCard = (
-    <div className="upper">
-      <div className="leftUpper">
+    <div className="user-info">
+      <div>
         <ImageUploader
           onSubmit={handleImageSubmit}
           promptText="Click to upload a new profile picture"
         >
-          <img className={classes.profile} alt="profile" src={values.avatar} />
+          <img className="user-info__avatar" alt="avatar" src={values.avatar} />
         </ImageUploader>
 
         <TextField
           className="form-field"
-          label="Name"
           value={values.name}
           onChange={handleChange("name")}
           margin="dense"
           variant="outlined"
         />
+      </div>
+      <div className="">
+        <span className="user-info__sub-heading">ABOUT ME:</span>
         <TextField
           className="form-field"
-          label="Location"
+          value={values.description}
+          onChange={handleChange("description")}
+          margin="dense"
+          multiline
+          variant="outlined"
+        />
+      </div>
+      <div>
+        <span className="user-info__sub-heading">FAVORITE CUISINES: </span>
+        <TextField
+          className="form-field"
+          value={values.favorite}
+          onChange={handleChange("favorite")}
+          margin="dense"
+          multiline
+          variant="outlined"
+        />
+      </div>
+
+      <div>
+        <span className="user-info__sub-heading">LOCATION: </span>
+        <TextField
+          className="form-field"
           value={values.strlocation}
           onChange={handleChange("strlocation")}
           margin="dense"
           variant="outlined"
         />
-        <RequestButton onClick={onSubmitAttempt}>Save Profile</RequestButton>
       </div>
-      <div className="rightUpper">
-        <div className="">
-          <span className={classes.boldbig}>ABOUT ME:</span>
-          <TextField
-            className="form-field"
-            label="About Me"
-            value={values.description}
-            onChange={handleChange("description")}
-            margin="dense"
-            multiline
-            variant="outlined"
-          />
-        </div>
-        <div className="">
-          <span className={classes.boldbig}>FAVORITE CUSINE: </span>
-          <TextField
-            className="form-field"
-            label="Favorite Cuisines"
-            value={values.favorite}
-            onChange={handleChange("favorite")}
-            margin="dense"
-            multiline
-            variant="outlined"
-          />
-        </div>
-      </div>
+      <StyledButton onClick={onSubmitAttempt}>Save Profile</StyledButton>
     </div>
   );
   return (

@@ -19,11 +19,6 @@ const PageContainer = styled.div`
   height: 100vh;
   background-color: ${colors.background};
   transition: all 100ms;
-  .name-card-container {
-    width: 800px;
-    height: 500px;
-    text-align: center;
-  }
 
   nav span {
     margin-right: ${layout.spacing(4)};
@@ -44,21 +39,19 @@ function CustomerPage({ customerId }) {
 
   return (
     <PageContainer>
-      <Navbar>
-        <Link to="/browse/chefs" style={{ marginRight: 10 }}>
-          <Button outline style={{ borderRadius: 10 }}>
-            Browse Chefs
-          </Button>
-        </Link>
-        <SimpleMenu />
-      </Navbar>
-      <div className="name-card-container">
-        {customer ? (
-          <NameCard customer={customer} userIsOwner={userIsOwner} />
-        ) : (
-          "Loading..."
-        )}
-      </div>
+      <Navbar
+        links={[
+          {
+            link: "/browse/chefs",
+            text: "Browse Chefs",
+          },
+        ]}
+      />
+      {customer ? (
+        <NameCard customer={customer} userIsOwner={userIsOwner} />
+      ) : (
+        "Loading..."
+      )}
     </PageContainer>
   );
 }

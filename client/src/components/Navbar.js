@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef } from "react";
 import styled from "styled-components";
 import { isMobile } from "react-device-detect";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
@@ -32,9 +32,12 @@ const Container = styled.header`
     transparent ? "none" : `1px 7px 20px ${colors.bgcolor}`};
 
   #menu-btn {
+    display: flex;
+    align-items: center;
     border-radius: 10%;
     padding: 12px;
     border: 1px solid transparent;
+    cursor: pointer;
     &:hover {
       border: 1px solid white;
     }
@@ -69,14 +72,23 @@ const Container = styled.header`
 `;
 
 export default function Navbar({ links, transparent }) {
-  const { user, setUser } = useContext(AuthContext);
+  const history = useHistory();
+  const { user } = useContext(AuthContext);
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
+
+  const navigate = (path) => {
+    setDrawerIsOpen(false);
+
+    setTimeout(() => {
+      history.push(path);
+    }, 200);
+  };
 
   return (
     <Container transparent={transparent}>
       <img src="/logo.png" alt="logo" />
-      <span id="menu-btn">
-        <AiOutlineMenu onClick={() => setDrawerIsOpen(true)} />
+      <span id="menu-btn" onClick={() => setDrawerIsOpen(true)}>
+        <AiOutlineMenu />
       </span>
       <Drawer
         anchor="right"
@@ -88,13 +100,31 @@ export default function Navbar({ links, transparent }) {
           style={{ alignSelf: "end", margin: "12px" }}
         />
         <List style={{ width: "50vw", maxWidth: 300 }}>
-          {links.map(({ link, text }, index) => (
-            <ListItem button key={link} onClick={() => setDrawerIsOpen(false)}>
-              <Link to={link} style={{ height: "100%", width: "100%" }}>
-                {text}
-              </Link>
-            </ListItem>
-          ))}
+          {links &&
+            links.map(({ link, text }, index) => (
+              <ListItem button key={link} onClick={() => navigate(link)}>
+                <ListItemText primary={text} />
+              </ListItem>
+            ))}
+          {user && (
+            <>
+              <ListItem
+                button
+                key={"profile"}
+                onClick={() => navigate(`/${user.usertype}/${user.id}`)}
+              >
+                <ListItemText primary={"Profile"} />
+              </ListItem>
+
+              <ListItem
+                button
+                key={"logout"}
+                onClick={() => navigate("/logout")}
+              >
+                <ListItemText primary={"Logout"} />
+              </ListItem>
+            </>
+          )}
         </List>
       </Drawer>
     </Container>

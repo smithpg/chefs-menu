@@ -24,12 +24,18 @@ const PageContainer = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 12px 24px;
+    align-items: center;
+    padding: 40px 24px;
+
+    h1 {
+      margin: 0;
+    }
 
     @media (min-width: 400px) {
       background: white;
       box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.3);
       border-radius: 6px;
+      width: 400px;
     }
   }
 
@@ -75,13 +81,16 @@ function AuthPage({ classes, ...rest }) {
 
   return (
     <PageContainer className="pageContainer">
-      {/* <DemoModeSwitch
-        style={{
-          position: "absolute",
-          bottom: 10,
-          left: "calc(50vw - 250px)",
-        }}
-      /> */}
+      {!isMobile && (
+        <DemoModeSwitch
+          style={{
+            position: "absolute",
+            bottom: 10,
+            width: 500,
+            left: "calc(50vw - 250px)",
+          }}
+        />
+      )}
 
       <Switch>
         <Route path="/login">

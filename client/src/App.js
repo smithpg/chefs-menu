@@ -5,10 +5,12 @@ import { StripeProvider } from "react-stripe-elements";
 import CheckoutPage from "./pages/CheckoutPage";
 import ContextProvider from "./store/Provider";
 import AuthPage from "./pages/AuthPage";
+import LogoutPage from "./pages/LogoutPage";
 import ChefPage from "./pages/ChefProfilePage";
 import CustomerPage from "./pages/CustomerProfilePage";
-import "./App.css";
 import BrowseChefsPage from "./pages/BrowsePage";
+
+import "./App.css";
 
 //TODO: Implement this
 function browserHasToken() {
@@ -39,6 +41,7 @@ function App() {
             />
             <Route path="/browse/chefs" component={BrowseChefsPage} />
             <Route path="/checkout" component={CheckoutPage} />
+            <Route path="/logout" component={LogoutPage} />
           </Switch>
         </BrowserRouter>
       </ContextProvider>

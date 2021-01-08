@@ -4,10 +4,9 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   wrap: {
-    justifyContent: "center",
     display: "flex",
-    flexWrap: "wrap"
-  }
+    flexWrap: "wrap",
+  },
 });
 
 export default function Cuisinelist({ cuisineList }) {
