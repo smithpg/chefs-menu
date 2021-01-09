@@ -5,12 +5,14 @@ const mongoose = require("mongoose"),
 const connectionString =
   process.env.NODE_ENV !== "production"
     ? "mongodb://localhost:27017/test"
-    : `mongodb://${DB_USER}:${DB_PASSWORD}@ds245532.mlab.com:45532/chefsmenu`;
+    : `mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.h7rm9.mongodb.net/chefsmenu?retryWrites=true&w=majority`;
+
+console.log(connectionString);
 
 mongoose.connect(connectionString, {
   useNewUrlParser: true, // Use new url parser instead of default deprecated one
   useCreateIndex: true, //ensure index is deprecated use createindex instead.
-  keepAlive: true
+  keepAlive: true,
 });
 
 User.collection.createIndex({ location: "2dsphere" });
