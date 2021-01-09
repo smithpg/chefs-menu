@@ -15,10 +15,12 @@ const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
+  min-height: 100vh;
   background-color: ${colors.background};
   transition: all 100ms;
+  padding-top: calc(${layout.navHeight} + 50px);
+
+  padding-bottom: 100px;
 
   nav span {
     margin-right: ${layout.spacing(4)};

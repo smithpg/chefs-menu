@@ -4,19 +4,19 @@ import {
   InfoWindow,
   Marker,
   GoogleApiWrapper,
-  Circle
+  Circle,
 } from "google-maps-react";
 import { callAPI } from "../helpers/api";
 import { useState, useEffect, useContext } from "react";
 
-function GoogleMap(props) {
+function GoogleMap({ location, ...props }) {
   const style = {
-    height: "100%"
+    height: "100%",
   };
-  const coords = { lat: props.location.lat, lng: props.location.lng };
+  const coords = { lat: location.lat, lng: location.lng };
   console.log(window.google);
   return (
-    <div style={{ position: "relative", height: "100%" }}>
+    <div style={{ position: "relative" }} {...props}>
       <Map google={window.google} zoom={13} center={coords}>
         <Marker name="User Location" position={coords} />
       </Map>

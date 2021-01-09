@@ -34,6 +34,7 @@ const StyledButton = styled(Button)`
     bottom: 0px;
     left: 0px;
     width: 100vw;
+    height: 75px;
     z-index: 99;
   }
 `;
@@ -46,15 +47,25 @@ const Card = styled.div`
   max-width: 100vw;
   padding: 0px 12px;
 
+  section {
+    h3 {
+      text-transform: uppercase;
+    }
+    margin-bottom: 1rem;
+  }
+
   .user-info__title {
     display: flex;
     align-items: center;
     border-bottom: 2px solid ${background};
+    height: 150px;
+
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   .user-info__name {
     text-align: left;
-    flex-grow: 1;
     padding: 0px 12px;
 
     font-weight: bold;
@@ -72,10 +83,7 @@ const Card = styled.div`
     justify-self: flex-end;
   }
 
-  .user-info__sub-heading {
-    font-weight: bold;
-  }
-  .lower {
+  .user-info__map {
     height: 250px;
   }
 
@@ -173,9 +181,11 @@ function Namecard({ customer, history, userIsOwner }) {
   const StaticCard = (
     <>
       <div className="user-info">
-        <div className="user-info__title">
+        <section className="user-info__title">
           <img className="user-info__avatar" alt="avatar" src={values.avatar} />
           <div className="user-info__name"> {values.name} </div>
+        </section>
+        <section>
           {userIsOwner ? (
             <StyledButton
               onClick={toggleEditMode}
@@ -184,31 +194,31 @@ function Namecard({ customer, history, userIsOwner }) {
               Edit Info
             </StyledButton>
           ) : null}
-        </div>
-        <div className="user-info__details">
+        </section>
+        <section className="user-info__details">
           <p> {values.strlocation} </p>
-        </div>
-        <div className="rightUpper">
-          <span className="user-info__sub-heading">ABOUT ME:</span>
+        </section>
+        <section>
+          <h3>ABOUT ME:</h3>
           <p>{customer.description}</p>
-          <span className="user-info__sub-heading">FAVORITE CUISINES: </span>
+          <h3>FAVORITE CUISINES: </h3>
           {values.favorite.length > 0 ? (
             <CuisineList cuisineList={values.favorite} />
           ) : (
             <p>You have not added any favorites.</p>
           )}
-        </div>
-      </div>
-      <div className="lower">
-        <span className="user-info__sub-heading">LOCATION: </span>
-        <GoogleMap location={location} zoom={13} />
+        </section>
+        <section>
+          <h3>LOCATION: </h3>
+          <GoogleMap location={location} zoom={13} className="user-info__map" />
+        </section>
       </div>
     </>
   );
 
   const EditModeCard = (
     <div className="user-info">
-      <div>
+      <section className="user-info__title">
         <ImageUploader
           onSubmit={handleImageSubmit}
           promptText="Click to upload a new profile picture"
@@ -223,9 +233,12 @@ function Namecard({ customer, history, userIsOwner }) {
           margin="dense"
           variant="outlined"
         />
-      </div>
-      <div className="">
-        <span className="user-info__sub-heading">ABOUT ME:</span>
+      </section>
+      <section>
+        <StyledButton onClick={onSubmitAttempt}>Save Profile</StyledButton>
+      </section>
+      <section className="">
+        <h3>ABOUT ME:</h3>
         <TextField
           className="form-field"
           value={values.description}
@@ -234,9 +247,9 @@ function Namecard({ customer, history, userIsOwner }) {
           multiline
           variant="outlined"
         />
-      </div>
-      <div>
-        <span className="user-info__sub-heading">FAVORITE CUISINES: </span>
+      </section>
+      <section>
+        <h3>FAVORITE CUISINES: </h3>
         <TextField
           className="form-field"
           value={values.favorite}
@@ -245,10 +258,10 @@ function Namecard({ customer, history, userIsOwner }) {
           multiline
           variant="outlined"
         />
-      </div>
+      </section>
 
-      <div>
-        <span className="user-info__sub-heading">LOCATION: </span>
+      <section>
+        <h3>LOCATION: </h3>
         <TextField
           className="form-field"
           value={values.strlocation}
@@ -256,8 +269,7 @@ function Namecard({ customer, history, userIsOwner }) {
           margin="dense"
           variant="outlined"
         />
-      </div>
-      <StyledButton onClick={onSubmitAttempt}>Save Profile</StyledButton>
+      </section>
     </div>
   );
   return (
